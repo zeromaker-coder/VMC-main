@@ -1,0 +1,13 @@
+*.bak
+*.scvd
+*.ini
+*.Administrator
+*.hp
+*.uvoptx
+*.o
+*.d
+*.crf
+*.axf
+*.htm
+DebugConfig/  
+OBJ/
