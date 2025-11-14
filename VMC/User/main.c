@@ -20,8 +20,8 @@ int M1_PP =7, M1_DIR = 1 ;
 int Motor0 =0;
 int Motor1 = 1;
 
-float real_ph0_temp;
-float real_ph0;
+float real_ph1_temp;
+float real_ph1;
 
 float real_ph4_temp;
 float real_ph4;
@@ -42,7 +42,7 @@ int main(void)
 	
 	LegVMC_Init(&LEG_DATA);//初始化腿部
 	
-	LegVMC_SetTarget(&LEG_DATA,40,70);//设置腿部位置
+	LegVMC_SetTarget(&LEG_DATA,19.5,70);//设置腿部位置
 	
 	pid_init();//pid初始化
 	
@@ -52,14 +52,14 @@ int main(void)
 	{
 		
 		//角度重映射到水平面
-		real_ph0_temp=GetAngle_NoTrack(&Angle_Sensor0)/3.14/2*360-45.7;
-		if(real_ph0_temp<0)
+		real_ph1_temp=GetAngle_NoTrack(&Angle_Sensor0)/3.14/2*360-45.7;
+		if(real_ph1_temp<0)
 		{
-			real_ph0=(314.3-real_ph0_temp)* 0.0174533;
+			real_ph1=(314.3-real_ph1_temp)* 0.0174533;
 		}
 		else
 		{
-			real_ph0=real_ph0_temp* 0.0174533;
+			real_ph1=real_ph1_temp* 0.0174533;
 		}
 		
 		real_ph4_temp=GetAngle_NoTrack(&Angle_Sensor1)/3.14/2*360-192.4;
@@ -75,24 +75,36 @@ int main(void)
 		//更新腿部信息
 		LegVMC_Calc(&LEG_DATA);
 		
+		M0_speed_pid_location();
+		
 //		//发送角度数据
 //		Serial_SendFloatNumber(real_ph0/ 0.0174533,3,1);
 //		Serial_SendFloatNumber(real_ph4/ 0.0174533,3,1);
 		
 //		//发送力矩数据
-//		Serial_SendFloatNumber(-LEG_DATA.torque[0],3,1);
+//		Serial_SendFloatNumber(LEG_DATA.torque[0],3,1);
 //		Serial_SendFloatNumber(LEG_DATA.torque[1],3,1);
 		
 //		//发送pid数据
 //		Serial_SendFloatNumber(FX_PID_OUT,3,1);
 //		Serial_SendFloatNumber(FY_PID_OUT,3,1);
 		
-		//输出电机力矩
-		SetPhaseVoltage(&M0 , constrain((-LEG_DATA.torque[0]),-12,+12), M0_electricAngle());
-		SetPhaseVoltage(&M1 , constrain((LEG_DATA.torque[1]), -12,+12),M1_electricAngle());
-		
-		
+//		//输出坐标数据
+//		Serial_SendFloatNumber(LEG_DATA.XC,3,1);
+//		Serial_SendFloatNumber(LEG_DATA.YC,3,1);
 
+//		//输出速度环数据
+//		Serial_SendFloatNumber(M0_SPEED_PID_OUT,3,1);
+//		Serial_SendFloatNumber(M1_SPEED_PID_OUT,3,1);
+		
+		//输出电机力矩
+		SetPhaseVoltage(&M0 , constrain((-LEG_DATA.torque[0]),-6.3,+6.3), M0_electricAngle());
+		SetPhaseVoltage(&M1 , constrain((LEG_DATA.torque[1]), -6.3,+6.3),M1_electricAngle());
+		
+		
+//	//输出电机力矩
+//	SetPhaseVoltage(&M0 , constrain((-M0_SPEED_PID_OUT),-6.3,+6.3), M0_electricAngle());
+//	SetPhaseVoltage(&M1 , constrain((M1_SPEED_PID_OUT), -6.3,+6.3), M1_electricAngle());
 		
 	}
 

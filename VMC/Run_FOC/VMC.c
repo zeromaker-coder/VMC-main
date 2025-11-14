@@ -5,7 +5,7 @@
 #define PI 3.1415926f
 
 LegVMC_Data LEG_DATA;
-extern float real_ph0;
+extern float real_ph1;
 extern float real_ph4;
 
 
@@ -17,7 +17,7 @@ void LegVMC_Init(LegVMC_Data *data)
     data->l3 = 93;
     data->l4 = 60;
     data->l5 = 39;
-    data->phi1 = real_ph0;
+    data->phi1 = real_ph1;
     data->phi4 = real_ph4;
 }
 
@@ -28,18 +28,12 @@ void LegVMC_SetTarget(LegVMC_Data *data, float target_x, float target_y)
     data->target_y = target_y;
 }
 
-//设置VMCpid计算实际值
-void LegVMC_UpdateActual(LegVMC_Data *data, float actual_x, float actual_y) 
-{
-    data->actual_x = actual_x;
-    data->actual_y = actual_y;
-}
+
 
 //VMC计算函数
 void LegVMC_Calc(LegVMC_Data *data) 
 {
-	
-	  data->phi1 = real_ph0;
+	  data->phi1 = real_ph1;
     data->phi4 = real_ph4;
     
 	  //pid计算
@@ -72,7 +66,8 @@ void LegVMC_Calc(LegVMC_Data *data)
     data->YC = data->l1*sinf(data->phi1) + data->l2*sinf(data->phi2);
 		
 		//更新c点坐标目标值
-		LegVMC_SetTarget(data,data->XC,data->YC);
+		data->actual_x=data->XC;
+		data->actual_y=data->YC;
 		
     data->L0 = sqrtf((data->XC - data->l5/2.0f)*(data->XC - data->l5/2.0f) + data->YC*data->YC);
     data->phi0 = atan2f(data->YC, data->XC - data->l5/2.0f);

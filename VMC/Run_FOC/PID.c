@@ -1,5 +1,6 @@
 #include "pid.h" 
 #include "VMC.h"
+#include "DFOC.h"
 
 PID_LocTypeDef FX_PID;//转动力矩pid
 PID_LocTypeDef FY_PID;//纵向力矩pid
@@ -7,20 +8,27 @@ PID_LocTypeDef FY_PID;//纵向力矩pid
 float FX_PID_OUT;//转动力矩pid输出
 float FY_PID_OUT;//纵向力矩pid输出
 
+float M0_SPEED_PID_OUT;//左轮速度环输出
+float M1_SPEED_PID_OUT;//右轮速度环输出
+
+extern int M0_PP , M0_DIR ;
+extern int M1_PP , M1_DIR ;
+
+
 //pid初始化
 void pid_init(void)
 {
-	FX_PID.kp=0;
-	FX_PID.ki=0;
-	FX_PID.kd=0;
-	FX_PID.PID_I_LIMIT_MAX=0;
-	FX_PID.PID_OUT_LIMIT_MAX=0;
+	FX_PID.kp=-2;
+	FX_PID.ki=-0.02;
+	FX_PID.kd=-0.2;
+	FX_PID.PID_I_LIMIT_MAX=50;
+	FX_PID.PID_OUT_LIMIT_MAX=100;
 	
-	FY_PID.kp=0;
-	FY_PID.ki=0;
-	FY_PID.kd=0;
-	FY_PID.PID_I_LIMIT_MAX=0;
-	FY_PID.PID_OUT_LIMIT_MAX=0;
+	FY_PID.kp=0.01;
+	FY_PID.ki=0.0001;
+	FY_PID.kd=0.001;
+	FY_PID.PID_I_LIMIT_MAX=0.5;
+	FY_PID.PID_OUT_LIMIT_MAX=1;
 }
 
 
@@ -53,7 +61,19 @@ void FY_pid_location(void)
 	FY_PID_OUT=PID_location(LEG_DATA.target_y,LEG_DATA.actual_y,&FY_PID);
 }
 
+//左轮速度环
+void M0_speed_pid_location(void)
+{
+	Angle_Sensor0.velocity = Lowpassfilter(&M0_VEL_Filter, GetVelocity(&Angle_Sensor0));
+	M0_SPEED_PID_OUT=PID_Controller(&M0_VEL_PID, M0_DIR*(-LEG_DATA.torque[0] - Angle_Sensor0.velocity));
+}
 
+//右轮速度环
+void M1_speed_pid_location(void)
+{
+	Angle_Sensor1.velocity = Lowpassfilter(&M1_VEL_Filter, GetVelocity(&Angle_Sensor1));
+	M1_SPEED_PID_OUT=PID_Controller(&M1_VEL_PID, M1_DIR*(LEG_DATA.torque[1] - Angle_Sensor1.velocity));
+}
 
 
  

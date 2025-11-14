@@ -49,8 +49,6 @@ void LegVMC_Init(LegVMC_Data *data);
 
 void LegVMC_SetTarget(LegVMC_Data *data, float target_x, float target_y);
 
-void LegVMC_UpdateActual(LegVMC_Data *data, float actual_x, float actual_y) ;
-
 void LegVMC_Calc(LegVMC_Data *data);
 
 extern LegVMC_Data LEG_DATA;

@@ -20,9 +20,17 @@ void FY_pid_location(void);
 
 void pid_init(void);
 
+void M0_speed_pid_location(void);
+
+void M1_speed_pid_location(void);
+
 extern float FX_PID_OUT;
 
 extern float FY_PID_OUT;
+
+extern float M0_SPEED_PID_OUT;
+\
+extern float M1_SPEED_PID_OUT;
 
 
 #endif

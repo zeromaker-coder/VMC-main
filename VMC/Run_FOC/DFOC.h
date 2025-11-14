@@ -46,8 +46,17 @@ void Print_Velocity(int Motor_Velocity);
 extern struct AS5600_Sensor Angle_Sensor0;
 extern struct AS5600_Sensor Angle_Sensor1;
 
-extern struct Motor_ M0;  
-extern struct Motor_ M1; 
+extern struct Motor_ M0 ;  
+extern struct Motor_ M1 ; 
+
+extern struct _PID M0_VEL_PID ;
+extern struct _PID M1_VEL_PID ;
+
+extern struct LOWPASS M0_VEL_Filter ;
+extern struct LOWPASS M1_VEL_Filter ;
+
+extern struct AS5600_Sensor Angle_Sensor0 ;
+extern struct AS5600_Sensor Angle_Sensor1 ;
 
 #endif
 
