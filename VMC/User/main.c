@@ -42,7 +42,7 @@ int main(void)
 	
 	LegVMC_Init(&LEG_DATA);//初始化腿部
 	
-	LegVMC_SetTarget(&LEG_DATA,19.5,70);//设置腿部位置
+	LegVMC_SetTarget(&LEG_DATA,0,70);//设置腿部位置
 	
 	pid_init();//pid初始化
 	
@@ -63,7 +63,7 @@ int main(void)
 		}
 		
 		real_ph4_temp=GetAngle_NoTrack(&Angle_Sensor1)/3.14/2*360-192.4;
-		if(real_ph4_temp<0)
+		if(real_ph4_temp>167.6)
 		{
 			real_ph4=real_ph4_temp* 0.0174533;
 		}
@@ -74,15 +74,13 @@ int main(void)
 			
 		//更新腿部信息
 		LegVMC_Calc(&LEG_DATA);
-		
-		M0_speed_pid_location();
-		
+				
 //		//发送角度数据
-//		Serial_SendFloatNumber(real_ph0/ 0.0174533,3,1);
+//		Serial_SendFloatNumber(real_ph1/ 0.0174533,3,1);
 //		Serial_SendFloatNumber(real_ph4/ 0.0174533,3,1);
 		
 //		//发送力矩数据
-//		Serial_SendFloatNumber(LEG_DATA.torque[0],3,1);
+//		Serial_SendFloatNumber(-LEG_DATA.torque[0],3,1);
 //		Serial_SendFloatNumber(LEG_DATA.torque[1],3,1);
 		
 //		//发送pid数据

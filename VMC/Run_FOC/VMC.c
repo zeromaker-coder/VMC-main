@@ -56,9 +56,7 @@ void LegVMC_Calc(LegVMC_Data *data)
     data->B0 = 2 * data->l2 * (data->YD - data->YB);
     data->C0 = data->l2*data->l2 + data->lBD*data->lBD - data->l3*data->l3;
     
-    float sqrt_arg = data->A0*data->A0 + data->B0*data->B0 - data->C0*data->C0;
-    sqrt_arg = (sqrt_arg < 0.0f) ? 0.0f : sqrt_arg;
-    data->phi2 = 2 * atan2f((data->B0 + sqrtf(sqrt_arg)), data->A0 + data->C0);
+    data->phi2 = 2 * atan2f((data->B0 + sqrtf(data->A0*data->A0 + data->B0*data->B0 - data->C0*data->C0)), data->A0 + data->C0);
     data->phi3 = atan2f(data->YB - data->YD + data->l2*sinf(data->phi2),
                        data->XB - data->XD + data->l2*cosf(data->phi2));
     

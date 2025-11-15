@@ -18,17 +18,17 @@ extern int M1_PP , M1_DIR ;
 //pid≥ı ºªØ
 void pid_init(void)
 {
-	FX_PID.kp=-2;
-	FX_PID.ki=-0.02;
-	FX_PID.kd=-0.2;
-	FX_PID.PID_I_LIMIT_MAX=50;
+	FX_PID.kp=-1.8;
+	FX_PID.ki=-0.01;
+	FX_PID.kd=-4;
+	FX_PID.PID_I_LIMIT_MAX=70;
 	FX_PID.PID_OUT_LIMIT_MAX=100;
 	
-	FY_PID.kp=0.01;
-	FY_PID.ki=0.0001;
-	FY_PID.kd=0.001;
-	FY_PID.PID_I_LIMIT_MAX=0.5;
-	FY_PID.PID_OUT_LIMIT_MAX=1;
+	FY_PID.kp=0.04;
+	FY_PID.ki=0.0002;
+	FY_PID.kd=0.1;
+	FY_PID.PID_I_LIMIT_MAX=1;
+	FY_PID.PID_OUT_LIMIT_MAX=1.5;
 }
 
 
